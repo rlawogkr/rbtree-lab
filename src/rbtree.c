@@ -303,7 +303,7 @@ int rb_inorder(node_t *nil, node_t *x, key_t *arr, int i){
   }
   return i;
 }
-int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n) {
+int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n) {//오름차순 출력
   // TODO: implement to_array
   if(t->root == t->nil) {
     return 0;
