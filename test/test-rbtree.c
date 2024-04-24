@@ -303,9 +303,9 @@ void test_to_array_suite() {
   rbtree *t = new_rbtree();
   assert(t != NULL);
 
-  // key_t entries[] = {10, 5, 8, 34, 67, 23, 156, 24, 2, 12, 24, 36, 990, 25};
-  // const size_t n = sizeof(entries) / sizeof(entries[0]);
-  // test_to_array(t, entries, n);
+  key_t entries[] = {10, 5, 8, 34, 67, 23, 156, 24, 2, 12, 24, 36, 990, 25};
+  const size_t n = sizeof(entries) / sizeof(entries[0]);
+  test_to_array(t, entries, n);
 
   delete_rbtree(t);
 }

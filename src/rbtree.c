@@ -122,19 +122,26 @@ node_t *rbtree_insert(rbtree *t, const key_t key) {
   return t->root;             // 트리의 root값 반환
 }
 
+void delete_rbtree_node(rbtree *t, node_t *x) {
+  if(x->left != t->nil) { // x의 왼쪽 자식이 경계 노드가 아니라면
+    delete_rbtree_node(t, x->left);
+  }
+  if(x->right != t->nil) { // x의 오른쪽 자식이 경계 노드가 아니라면
+    delete_rbtree_node(t, x->right);
+  }
+  free(x); // x의 메모리 해제
+  return;
+}
 
+//using 재귀
 void delete_rbtree(rbtree *t) {
   // TODO: reclaim the tree nodes's memory
-  node_t* temp = t->root;  
-  while(temp != t->nil) {
-    node_t* left = temp->left;
-    node_t* right = temp->right;
-    free(temp);
-    temp = left;
-    temp = right;
+  if(t->root != t->nil) { // root가 nil이 아닐 때
+    delete_rbtree_node(t, t->root);
   }
   free(t->nil);
   free(t);
+  return;
 }
 
 // find should return the node with the key or NULL if no such node exists
@@ -276,11 +283,13 @@ int rbtree_erase(rbtree *t, node_t *z) {
     y->left->parent = y;                  // y의 왼쪽 자식의 부모는 y
     y->color = z->color;                  // y의 색은 삭제할 노드의 색
   }
-  free(z);                                // 삭제한 노드가 가리키는 공간 삭제
-  z = NULL;                               // 할당 해제 후 삭제한 노드값을 NULL로 초기화
+                               // 삭제한 노드가 가리키는 공간 삭제
+                               // 할당 해제 후 삭제한 노드값을 NULL로 초기화
   if (y_color == RBTREE_BLACK) {          // y_color가 BLACK 일 때, 즉 삭제한 노드의 색이 BLACK일 때(특성 5 위반)
     rb_delete_fixup(t, x);                // 노드의 색을 바꿈
   }
+  free(z);   
+  z = NULL;  
   return 0;
 }
 
